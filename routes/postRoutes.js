@@ -1,10 +1,10 @@
 "use strict"
-const {Post} = require('../modules/index');
+const {Post,Comment,commentModal} = require('../modules/index');
 
 
 
 async function getPost(req,res){
-    const post=await Post.findAll();
+    const post=await Post.read();
     res.status(200).json({
         post
     })
@@ -19,35 +19,32 @@ async function createNewPost(req,res){
 
 async function deletPost(req,res){
     const id=req.params.id;
-    const post= await Post.destroy({
-        where:{id:id}
-    });
+    const post= await Post.Delete(id);
     res.status(204).json({post});
     
 }
 
 async function selectPost(req,res){
     const id=req.params.id;
-    const post=await Post.findOne({
-        where:{id:id}
-    });
+    const post=await Post.read(id)
     res.status(200).json(post);
 }
 
 async function updatePost(req,res){
     const id =req.params.id;
     const updatePost=req.body;
-    const search=await Post.findOne({
-        where:{id:id}
-    });
-    const update= await search.update(updatePost);
+    const update= await Post.update(id, updatePost);
     res.status(200).json(update);
 }
-
+async function getPostComment(req,res){
+    const commentP=await Post.readWithPost(commentModal);
+    res.status(200).json(commentP);
+}
 module.exports={
     getPost,
     createNewPost,
     deletPost,
     selectPost,
-    updatePost
+    updatePost,
+    getPostComment
 }

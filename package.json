@@ -20,7 +20,6 @@
   },
   "homepage": "https://github.com/hamzahhisham306/post_sequlize_server#readme",
   "dependencies": {
-    "@types/supertest": "^2.0.12",
     "cors": "^2.8.5",
     "dotenv": "^16.0.2",
     "express": "^4.18.1",

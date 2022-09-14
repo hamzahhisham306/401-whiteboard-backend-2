@@ -20,12 +20,4 @@ describe( 'server live test', () => {
         const res =await req.get('/post/0');
         expect(res.status).toEqual(500);
     })
-    it("not found page", async () => {
-        const response = await req.get("/scs");
-        expect(response.status).toBe(404);
-      });
-      it( '404', async () => {
-        const res = await req.get( '/posts' );
-        expect(res.status).toEqual(404);
-    } );
-    });
+} );

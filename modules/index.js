@@ -4,6 +4,12 @@
 const { Sequelize, DataTypes } = require('sequelize');
 
 const Post = require('./post.model');
+const Comment=require('./comment.model');
+const collenction=require('../collections/user-comment-routes');
+
+
+
+
 
 require('dotenv').config();
 
@@ -20,8 +26,18 @@ const sequelizeOption = {
 
 
 let sequelize = new Sequelize(POSTGRES_URL, sequelizeOption);
+const postModel=Post(sequelize, DataTypes);
+const commentModal=Comment(sequelize, DataTypes);
+
+postModel.hasMany(commentModal,{foreignKey:'idComment', sourceKey:'id'});
+commentModal.belongsTo(postModel,{foreignKey:'idComment', targetKey:'id'});
+const postCollection=new collenction(postModel);
+const commentCollection=new collenction(commentModal);
 
 module.exports = {
   db: sequelize,
-  Post: Post(sequelize, DataTypes),
-};
+  Post:postCollection,
+  Comment:commentCollection,
+  commentModal:commentModal
+
+}
