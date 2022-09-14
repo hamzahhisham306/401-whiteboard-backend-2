@@ -5,18 +5,26 @@ const supertest=require('supertest');
 
 const req=supertest(server.app);
 
-describe('Get All post ', () => {
+describe('Get post ', () => {
     it('get all posts from DB', async()=> {
         const res = await req.get('/post');
         expect(res.status).toEqual(200);
     });
-    it('Select any  Post', async ()=> {
+    it('Select one Post', async ()=> {
         const res = await req.get('/post/4');
         expect(res.status).toEqual(200);
         expect(res.text).toEqual('{"id":4,"name":"Mohmad","age":"22","createdAt":"2022-09-11T21:43:43.277Z","updatedAt":"2022-09-11T21:43:43.277Z"}'
             
             );
            });
+     it('Get comment',async()=>{
+        const res=await req.get('/comment');
+        expect(res.status).toEqual(200);
+     });   
+     it('Get post and commment', async()=>{
+        const res=await req.get('/postWitheComment');
+        expect(res.status).toEqual(200)
+     })
 });
 
 describe('create a new post', () => {
@@ -27,11 +35,24 @@ it('new post', async () => {
     })
     expect(res.status).toEqual(201);
 });
+it('new comment', async () => {
+    const res =  await req.post('/comment').send({
+        descrption: 'I am 80 years old',
+        Nationality: "Plastain",
+        idComment:3
+    })
+    expect(res.status).toEqual(201);
+});
 });
 
-describe('delete any post you want', () => {
+describe('delete post', () => {
     it('delete post from DB', async () => {
         const res = await req.delete('/post/1');
+        expect(res.status).toEqual(204);
+        expect(res.text).toEqual('');
+    });
+    it('delete Comment', async () => {
+        const res = await req.delete('/comment/9');
         expect(res.status).toEqual(204);
         expect(res.text).toEqual('');
     });
@@ -48,5 +69,19 @@ describe('Update route', () => {
         it( 'Not found 404', async()=> {
             const res = await req.get('/hamzah');
             expect(res.status).toEqual(404);
-        } );
+        });
+        it('update any comment', async () => {
+            const res =  await req.put('/comment/10').send({
+                descrption: 'I am 65 years old',
+                Nationality: "Plastain",
+                idComment:20
+            });
+            expect(res.status).toEqual(202);
+    
+      })
 });
+
+
+
+
+

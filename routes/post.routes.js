@@ -8,8 +8,8 @@ const { getPost,
     createNewPost,
     deletPost,
     selectPost,
-    updatePost
-
+    updatePost,
+    getPostComment
 } = require('./postRoutes');
 
 
@@ -18,6 +18,7 @@ const { getPost,
 
 
 router.get('/post',getPost);
+router.get('/postWitheComment',getPostComment);
 router.post('/post',createNewPost);
 router.delete('/post/:id', deletPost);
 router.get('/post/:id',ERROR,selectPost);
