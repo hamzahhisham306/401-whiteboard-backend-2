@@ -5,6 +5,7 @@ const { Sequelize, DataTypes } = require('sequelize');
 
 const Post = require('./post.model');
 const Comment=require('./comment.model');
+const User =require('./user.model');
 const collenction=require('../collections/user-comment-routes');
 
 
@@ -25,9 +26,20 @@ const sequelizeOption = {
 }
 
 
+
 let sequelize = new Sequelize(POSTGRES_URL, sequelizeOption);
 const postModel=Post(sequelize, DataTypes);
 const commentModal=Comment(sequelize, DataTypes);
+const UserModal=User(sequelize, DataTypes);
+
+
+sequelize.authenticate().then(() => {
+  console.log('Database connected to postgres');
+}).catch((err) => {
+  console.log(err)
+});
+
+
 
 postModel.hasMany(commentModal,{foreignKey:'idComment', sourceKey:'id'});
 commentModal.belongsTo(postModel,{foreignKey:'idComment', targetKey:'id'});
@@ -38,6 +50,6 @@ module.exports = {
   db: sequelize,
   Post:postCollection,
   Comment:commentCollection,
-  commentModal:commentModal
-
+  commentModal:commentModal,
+  UserModal:UserModal
 }

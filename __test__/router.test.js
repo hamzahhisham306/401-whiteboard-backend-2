@@ -17,6 +17,7 @@ describe('Get post ', () => {
             
             );
            });
+
      it('Get comment',async()=>{
         const res=await req.get('/comment');
         expect(res.status).toEqual(200);
@@ -24,7 +25,8 @@ describe('Get post ', () => {
      it('Get post and commment', async()=>{
         const res=await req.get('/postWitheComment');
         expect(res.status).toEqual(200)
-     })
+     });
+
 });
 
 describe('create a new post', () => {
@@ -43,6 +45,9 @@ it('new comment', async () => {
     })
     expect(res.status).toEqual(201);
 });
+
+
+
 });
 
 describe('delete post', () => {
@@ -81,6 +86,34 @@ describe('Update route', () => {
       })
 });
 
+describe( 'signup', () => {
+    it( 'singup with uncorrect email', async () => {
+        const res = await req.post( '/signup' ).send( {
+            username: 'hamzah hisham ail',
+            email: 'hamzah.net',
+            password: 'hamzah'
+        } );
+        expect( res.status ).toEqual( 409 );
+    } );
+
+    it( 'when username exist', async () => {
+        const res = await req.post('/signup').send( {
+            username: 'hamzah hisham',
+            email: 'hamzahhisham3016@gmail.com',
+            password: 'hamzah123456'
+        } );
+        expect( res.status ).toEqual( 409 );
+    } );
+
+    it( 'when email exist', async () => {
+        const res = await req.post( '/signup' ).send( {
+            username: 'hamzah ail',
+            email: 'hamzahhishan306@gmail.com',
+            password: 'hamzah123456'
+        } );
+        expect( res.status ).toEqual( 409 );
+    } );
+} );
 
 
 
