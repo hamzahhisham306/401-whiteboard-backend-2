@@ -8,16 +8,18 @@ app.use(express.json());
 const four = require('./error-handlers/400');
 const postRoutes = require('./routes/post.routes');
 const commentRoutes=require('./routes/comment.route');
+const userRoutes=require('./routes/user.route');
 
 
 app.use(postRoutes);
 app.use(commentRoutes);
+app.use(userRoutes);
 app.get('/', (req, res) => {
   res.status(200).json({
     message: 'Home Post',
     code: 200
   })
-})
+});
 app.use('*', (req, res) => {
 
   four("this is error", req, res);
