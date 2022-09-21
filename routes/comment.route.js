@@ -4,15 +4,40 @@
 const express = require('express');
 const router =express.Router();
 
-const {Comment} =require('../modules/index');
+const {Comment,commentModal, UserModal} =require('../modules/index');
+
 
 router.get('/comment', getAllcomment);
 router.post('/comment',postComment);
 router.put('/comment/:id',updateComment);
 router.delete('/comment/:id', deleteComment);
+router.get('/commentUser', getUSer);
+router.get('/commentUser/:postID/:userID', getUserComment);
+
+
+
+/* istanbul ignore next */
+async function getUserComment(req,res){
+    const {userID, postID}=req.params;
+
+
+    const selectUser=await commentModal.findOne({where:{postID:postID,userID:userID}});
+    res.status(200).send(selectUser);
+}
+async function getUSer(req,res){
+    try{
+        const AllUser=await UserModal.findAll({include:[commentModal]});
+    res.status(200).json(AllUser)
+}
+catch(error){
+    console.error('Error when make Read')
+}
+}
 
 async function getAllcomment(req,res){
-    const comments=await Comment.read();
+    const comments=await commentModal.findAll({
+        include:[UserModal]
+    });
     res.status(200).json(comments);
 }
 

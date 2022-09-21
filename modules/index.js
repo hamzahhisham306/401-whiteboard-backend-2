@@ -40,9 +40,13 @@ sequelize.authenticate().then(() => {
 });
 
 
+UserModal.hasMany(commentModal,{foreignKey:'userID', sourceKey:'id'});
+commentModal.belongsTo(UserModal,{foreignKey:'userID', targetKey:'id'});
 
-postModel.hasMany(commentModal,{foreignKey:'idComment', sourceKey:'id'});
-commentModal.belongsTo(postModel,{foreignKey:'idComment', targetKey:'id'});
+postModel.hasMany(commentModal,{foreignKey:'postID', sourceKey:'id'});
+commentModal.belongsTo(postModel,{foreignKey:'postID', targetKey:'id'});
+
+
 const postCollection=new collenction(postModel);
 const commentCollection=new collenction(commentModal);
 

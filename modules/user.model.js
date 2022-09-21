@@ -1,6 +1,9 @@
+'use strict';
+const jwt= require('jsonwebtoken');
 
-const User=(sequleize, DataTypes)=>sequleize.define("User",{
- 
+/* istanbul ignore next */
+module.exports=(sequleize, DataTypes)=>{
+ const User=sequleize.define("User",{
     username:{
         type:DataTypes.STRING,
         allowNull: false,
@@ -14,7 +17,28 @@ const User=(sequleize, DataTypes)=>sequleize.define("User",{
     password:{
         type:DataTypes.STRING,
         allowNull: false
-    }
+    },
+    token:{
+        type:DataTypes.VIRTUAL,
+        get:function(){
+            return jwt.sign({
+                username:this.username
+            },process.env.JWT_SECRET)
+        },
+        set(token){
+            return jwt.sign(token, process.env.JWT_SECRET);
+        },
+    },
+    
+
 });
 
-module.exports=User
+User.authenticateToken=token=>{
+    return jwt.verify(token, process.env.JWT_SECRET,(error, decoded)=>{
+        if(error)return error;
+        else return decoded;
+    });
+    
+}
+return User;
+}

@@ -12,10 +12,10 @@ const {checkUser} =require('../middlewares/userAuth');
 
 
 
-
 router.post('/signin',signin);
 router.post('/signup',checkUser, signup);
-router.get('/users', allUser);
+router.get('/users',allUser);
+
 
 /* istanbul ignore next */
 async function signup(req,res){
@@ -26,8 +26,9 @@ try{
     email,
     password:await bcrypt.hash(password, 12),
   };
-
-  const user=UserModal.create(userData);
+ 
+  const user=await UserModal.create(userData);
+//   const newUser=await UserModal.findOne({where:{username:username}})
   if(user){
   res.status(201).json(user);   
   }
