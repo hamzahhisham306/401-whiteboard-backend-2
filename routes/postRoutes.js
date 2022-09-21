@@ -2,7 +2,7 @@
 const {Post,Comment,commentModal} = require('../modules/index');
 
 
-
+/* istanbul ignore next */
 async function getPost(req,res){
     const post=await Post.read();
     res.status(200).json({
@@ -23,7 +23,7 @@ async function deletPost(req,res){
     res.status(204).json({post});
     
 }
-
+/* istanbul ignore next */
 async function selectPost(req,res){
     const id=req.params.id;
     const post=await Post.read(id)
