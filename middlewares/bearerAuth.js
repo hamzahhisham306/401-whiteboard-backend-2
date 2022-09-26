@@ -6,14 +6,20 @@ module.exports = async (req, res, next) => {
   if( !req.headers.authorization ) (
     next('Invalid login')
   )
-  const token = req.headers.authorization.split(' ')[1]
+  console.log("bearerAuth>>>>>>",req.headers.authorization)
   try {
+    const token = req.headers.authorization.split(' ')[1];
+     if(!token){
+      console.log("The token is Empy");
+     }
     const validUser = UserModal.authenticateToken(token);
-    console.log(validUser);
+    console.log("VALID>>>>>>>>>",validUser);
     const userInfo = await UserModal.findOne({where: {username: validUser.username}});
     if(userInfo) {
       req.user = userInfo;
-      req.token = userInfo.token
+      req.token = userInfo.token;
+      console.log("USER INFO>>>>",req)
+
       next();
     } else {
       next('Invalid login')

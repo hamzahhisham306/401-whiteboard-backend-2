@@ -6,7 +6,7 @@ const base64=require('base-64');
 
 const router=express.Router();
 
-const {UserModal} =require('../modules/index');
+const {UserModal,postModel} =require('../modules/index');
 const {checkUser} =require('../middlewares/userAuth');
 
 
@@ -15,16 +15,18 @@ const {checkUser} =require('../middlewares/userAuth');
 router.post('/signin',signin);
 router.post('/signup',checkUser, signup);
 router.get('/users',allUser);
+router.get('/usersPosts',getUserWithPosts);
 
 
 /* istanbul ignore next */
 async function signup(req,res){
 try{
-  const {username, email, password}=req.body;
+  const {username, email, password, userRole}=req.body;
   const userData={
     username, 
     email,
     password:await bcrypt.hash(password, 12),
+    userRole
   };
  
   const user=await UserModal.create(userData);
@@ -39,9 +41,11 @@ try{
 
 /* istanbul ignore next */
 async function signin(req,res){
-    const header=req.headers.authorization.split(' ');
+    console.log(">>>>>>>>>>>>",req.headers.authorization.split(' ').pop())
+    const header=req.headers.authorization.split(' ')
     const encoded=header.pop();
     const decoded=base64.decode(encoded);
+    console.log(">>>>>>>",decoded.split(':'));
     console.log('Decoded',decoded);
     const [username, password]=decoded.split(':');
 
@@ -68,6 +72,10 @@ async function signin(req,res){
 async function allUser(req,res){
     const useres=await UserModal.findAll();
     res.status(200).json(useres)
+}
+async function getUserWithPosts(req,res){
+    const usersPosts=await UserModal.findAll({include:[postModel]});
+    res.status(200).json(usersPosts);
 }
 
 module.exports=router;

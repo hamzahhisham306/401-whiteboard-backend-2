@@ -1,7 +1,7 @@
 "use strict";
 
 
-const Post = (sequelize, DataTypes) => sequelize.define('Post', {
+const Post = (sequelize, DataTypes) => sequelize.define('namesURLs', {
     name: {
         type: DataTypes.STRING,
         allowNull: false
@@ -10,7 +10,10 @@ const Post = (sequelize, DataTypes) => sequelize.define('Post', {
         type: DataTypes.INTEGER,
         allowNull: false
     },
-
+    ownerID: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+      }
 });
 
 
