@@ -40,11 +40,16 @@ sequelize.authenticate().then(() => {
 });
 
 
+UserModal.hasMany(postModel,{foreignKey:'ownerID', sourceKey:'id'});
+postModel.belongsTo(UserModal,{foreignKey:'ownerID',sourceKey:'id'});
+
+
 UserModal.hasMany(commentModal,{foreignKey:'userID', sourceKey:'id'});
 commentModal.belongsTo(UserModal,{foreignKey:'userID', targetKey:'id'});
 
 postModel.hasMany(commentModal,{foreignKey:'postID', sourceKey:'id'});
 commentModal.belongsTo(postModel,{foreignKey:'postID', targetKey:'id'});
+
 
 
 const postCollection=new collenction(postModel);
@@ -55,5 +60,6 @@ module.exports = {
   Post:postCollection,
   Comment:commentCollection,
   commentModal:commentModal,
-  UserModal:UserModal
+  UserModal:UserModal,
+  postModel:postModel
 }

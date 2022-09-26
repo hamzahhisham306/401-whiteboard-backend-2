@@ -34,13 +34,13 @@ describe('Get post ', () => {
 });
 
 describe('create a new post', () => {
-it('new post', async () => {
-    const res =  await req.post('/post').send({
-        name: 'hamzah',
-        age: 22
-    })
-    expect(res.status).toEqual(201);
-});
+// it('new post', async () => {
+//     const res =  await req.post('/post').send({
+//         name: 'hamzah',
+//         age: 22
+//     })
+//     expect(res.status).toEqual(201);
+// });
 it('new comment', async () => {
     const res =  await req.post('/comment').send({
         descrption: 'I am 80 years old',
@@ -55,11 +55,11 @@ it('new comment', async () => {
 });
 
 describe('delete post', () => {
-    it('delete post from DB', async () => {
-        const res = await req.delete('/post/1');
-        expect(res.status).toEqual(204);
-        expect(res.text).toEqual('');
-    });
+    // it('delete post from DB', async () => {
+    //     const res = await req.delete('/post/1');
+    //     expect(res.status).toEqual(204);
+    //     expect(res.text).toEqual('');
+    // });
     it('delete Comment', async () => {
         const res = await req.delete('/comment/9');
         expect(res.status).toEqual(204);
@@ -68,13 +68,13 @@ describe('delete post', () => {
 });
 
 describe('Update route', () => {
-    it('update any post', async () => {
-        const res =  await req.put('/post/3').send({
-            name: 'Waleed',
-            age: 28
-        });
-        expect(res.status).toEqual(200);
-        });
+    // it('update any post', async () => {
+    //     const res =  await req.put('/post/3').send({
+    //         name: 'Waleed',
+    //         age: 28
+    //     });
+    //     expect(res.status).toEqual(200);
+    //     });
         it( 'Not found 404', async()=> {
             const res = await req.get('/hamzah');
             expect(res.status).toEqual(404);

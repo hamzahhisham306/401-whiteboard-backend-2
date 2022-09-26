@@ -11,7 +11,7 @@ class userComment{
           return await this.model.create(object);
         }
         catch(error){
-            console.error("ERROR when create");
+            console.error("ERROR when create",error.message);
 
         }
     }
