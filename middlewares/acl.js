@@ -1,6 +1,10 @@
 "use strict";
 /* istanbul ignore next */
+const {UserModal,postModel} =require('../modules/index');
+
 const checkAllPost=async(req,res,next)=>{
+    console.log("CAP>>>>>>>>>>>>>>>>>>>>",req.user.capabilities)
+
     try{
         if(req.user.capabilities.includes('read')){
             next();
@@ -15,7 +19,6 @@ const checkAllPost=async(req,res,next)=>{
 }
 /* istanbul ignore next */
 const checkCreateNewPost=(req,res,next)=>{
-    console.log("CAP>>>>>>>>>>>>>>>>>>>>",req.user.capabilities)
 
     try{
         if(req.user.capabilities.includes('create')){
@@ -31,8 +34,9 @@ const checkCreateNewPost=(req,res,next)=>{
 }
 /* istanbul ignore next */
 const checkUpdateAnyPost=async(req,res,next)=>{
+    console.log('user. owener>>>>>>>',req.user.id, req.body.ownerID)
     try{
-        if(req.user.capabilities.includes('update')){
+        if(req.user.capabilities.includes('update')||req.user.id==req.body.ownerID){
             next()
         }
         else{
@@ -45,12 +49,16 @@ const checkUpdateAnyPost=async(req,res,next)=>{
 }
 /* istanbul ignore next */
 const checkDeleteAnyPost=async(req,res,next)=>{
-    console.log("CAP>>>>>>>>>>>>>>>>>>>>",req.user.capabilities)
+    console.log(req)
+    const id=req.params.id;
+    const post= await postModel.findOne({where:{id:id}});
+
     try{            
-        if(req.user.capabilities.includes('delete')){
+        if(req.user.capabilities.includes('delete')||req.user.id===post.ownerID){
             next();
         }
         else{
+
             res.status(409).send('Not authorized to delete post');        }
     }
     catch(e){
@@ -59,8 +67,9 @@ const checkDeleteAnyPost=async(req,res,next)=>{
 }
 
 module.exports={
-    checkDeleteAnyPost,
     checkUpdateAnyPost,
     checkCreateNewPost,
     checkAllPost,
+    checkDeleteAnyPost
+    
 }

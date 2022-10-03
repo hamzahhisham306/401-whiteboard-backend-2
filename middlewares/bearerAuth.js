@@ -15,10 +15,10 @@ module.exports = async (req, res, next) => {
     const validUser = UserModal.authenticateToken(token);
     console.log("VALID>>>>>>>>>",validUser);
     const userInfo = await UserModal.findOne({where: {username: validUser.username}});
+    console.log('USERINFO>>>>>>>',userInfo.token)
     if(userInfo) {
       req.user = userInfo;
       req.token = userInfo.token;
-      console.log("USER INFO>>>>",req)
 
       next();
     } else {
