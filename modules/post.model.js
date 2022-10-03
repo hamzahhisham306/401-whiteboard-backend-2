@@ -13,7 +13,9 @@ const Post = (sequelize, DataTypes) => sequelize.define('namesURLs', {
     ownerID: {
         type: DataTypes.INTEGER,
         allowNull: false
-      }
+      },
+  
+    
 });
 
 

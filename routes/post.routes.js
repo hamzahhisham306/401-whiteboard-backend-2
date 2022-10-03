@@ -4,10 +4,12 @@ const express = require('express');
 const router = express.Router();
 const ERROR = require('../error-handlers/500');
 const bearer = require('../middlewares/bearerAuth');
-const { checkDeleteAnyPost,
+const {
     checkUpdateAnyPost,
     checkCreateNewPost,
-    checkAllPost } = require('../middlewares/acl');
+    checkAllPost,
+    checkDeleteAnyPost
+     } = require('../middlewares/acl');
 
 
 const { getPost,
